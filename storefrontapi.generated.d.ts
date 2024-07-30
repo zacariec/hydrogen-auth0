@@ -319,6 +319,22 @@ export type RecommendedProductsQuery = {
   };
 };
 
+export type CustomerAccessTokenCreateWithMultipassMutationVariables =
+  StorefrontAPI.Exact<{
+    multipassToken: StorefrontAPI.Scalars['String']['input'];
+  }>;
+
+export type CustomerAccessTokenCreateWithMultipassMutation = {
+  customerAccessTokenCreateWithMultipass?: StorefrontAPI.Maybe<{
+    customerUserErrors: Array<
+      Pick<StorefrontAPI.CustomerUserError, 'code' | 'field' | 'message'>
+    >;
+    customerAccessToken?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.CustomerAccessToken, 'accessToken' | 'expiresAt'>
+    >;
+  }>;
+};
+
 export type PredictiveArticleFragment = {__typename: 'Article'} & Pick<
   StorefrontAPI.Article,
   'id' | 'title' | 'handle' | 'trackingParameters'
@@ -1203,7 +1219,12 @@ interface GeneratedQueryTypes {
   };
 }
 
-interface GeneratedMutationTypes {}
+interface GeneratedMutationTypes {
+  '#graphql\n  mutation customerAccessTokenCreateWithMultipass($multipassToken: String!) {\n    customerAccessTokenCreateWithMultipass(multipassToken: $multipassToken) {\n      customerUserErrors {\n        code\n        field\n        message\n      }\n      customerAccessToken {\n        accessToken\n        expiresAt\n      }\n    }\n  }\n  ': {
+    return: CustomerAccessTokenCreateWithMultipassMutation;
+    variables: CustomerAccessTokenCreateWithMultipassMutationVariables;
+  };
+}
 
 declare module '@shopify/hydrogen' {
   interface StorefrontQueries extends GeneratedQueryTypes {}
