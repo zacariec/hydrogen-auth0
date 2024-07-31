@@ -16,6 +16,8 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import {useMultipassToken} from './lib/multipass';
+import {useAuth0Session} from './utils/auth.server';
 
 export type RootLoader = typeof loader;
 
@@ -107,8 +109,9 @@ async function loadCriticalData({context}: LoaderFunctionArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: LoaderFunctionArgs) {
+function loadDeferredData({context, request}: LoaderFunctionArgs) {
   const {storefront, customerAccount, cart} = context;
+  const isLoggedIn = useMultipassToken(request);
 
   // defer the footer query (below the fold)
   const footer = storefront
@@ -125,7 +128,7 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
     });
   return {
     cart: cart.get(),
-    isLoggedIn: customerAccount.isLoggedIn(),
+    isLoggedIn,
     footer,
   };
 }
